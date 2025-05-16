@@ -1,1 +1,1 @@
-# db-social-query
+# db-social-platform

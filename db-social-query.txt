@@ -1,0 +1,121 @@
+1. 	SELECT *,
+    		TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS eta
+   	FROM 
+    		users;
+
+
+2. 	SELECT *,
+	FROM 	
+		posts
+	LEFT JOIN 
+		likes ON posts.id = likes.post_id
+	WHERE 
+		likes.post_id IS NULL;
+
+
+3.	SELECT 
+    		posts.id AS post_id,
+   		posts.title,
+    		users.username,
+    		COUNT(likes.post_id) AS number_like
+	FROM 
+    		posts
+	LEFT JOIN 
+		likes ON posts.id = likes.post_id
+	JOIN 	
+		users ON posts.user_id = users.id
+	GROUP BY 
+		posts.id, posts.title, users.username;
+
+
+4. 	SELECT 
+    		users.id AS user_id,
+    		users.username,
+    		COUNT(medias.user_id) AS number_media  
+	FROM 
+    		users
+	JOIN 
+    		medias ON medias.user_id = users.id
+	GROUP BY 
+    		users.id, users.username
+	ORDER BY 
+    		number_media;
+
+
+5.	SELECT 
+		users.id AS user_id,
+    		users.username,
+		COUNT(likes.user_id) AS number_likes
+	FROM 
+		users
+	JOIN 
+		likes ON likes.user_id = users.id
+	GROUP BY
+		users.id, users.username
+	ORDER BY 
+		number_likes;
+
+
+6.	SELECT 
+    		posts.*,
+    		users.username,
+    		TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) AS eta
+	FROM 
+    		posts
+	JOIN 
+    		users ON posts.user_id = users.id
+	WHERE 
+    		TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) BETWEEN 20 AND 30;
+
+
+
+7.	SELECT 
+    		users.*,
+    		COUNT(DISTINCT posts.id) AS number_post,
+    		COUNT(DISTINCT medias.id) AS number_media
+	FROM 
+    		users
+	JOIN 
+		posts ON posts.user_id = users.id
+	JOIN 
+		medias ON medias.user_id = users.id
+	GROUP BY 
+    		users.id
+	ORDER BY 
+    		users.id;
+
+
+8.	SELECT *
+	FROM 
+		posts 	
+	WHERE 
+		tags LIKE '%serata%';
+
+
+9.	SELECT 
+		posts.*,
+    		JSON_LENGTH(tags) AS number_tags
+
+	FROM 
+		posts
+	GROUP BY 
+		posts.id
+	ORDER BY 
+		number_tags;
+
+
+10.	SELECT 	
+		users.*,
+		SUM(JSON_LENGTH(posts.tags)) AS total_tags
+	
+	FROM 
+		users
+	JOIN 
+		posts ON posts.user_id = users.id
+	GROUP BY 
+		users.id
+	ORDER BY 	
+		total_tags;
+	
+
+
